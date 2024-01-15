@@ -7,6 +7,9 @@ LABEL maintainer="https://3d-portfolio-lovat-omega.vercel.app/"
 # Set environment variable to prevent Python from buffering stdout and stderr
 ENV PYTHONUNBUFFERED 1
 
+
+RUN apk add --update --no-cache postgresql-client
+
 # Install system dependencies required by psycopg2
 RUN apk add --no-cache musl-dev postgresql-dev
 
@@ -26,7 +29,7 @@ ARG DEV=false
 RUN python3.9 -m venv /py && \
     /py/bin/pip install --upgrade pip && \
     /py/bin/pip install --no-cache-dir -r /tmp/requirements.txt && \
-    if [ "$DEV" = "true"]; then \
+    if [ "$DEV" = "true" ]; then \
         /py/bin/pip install -r /tmp/requirements.dev.txt ; \
     fi && \
     rm /tmp/requirements.txt
